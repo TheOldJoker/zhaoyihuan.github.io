@@ -157,3 +157,31 @@ for (let i = 0; i < navigationLinks.length; i++) {
 
   });
 }
+
+// 修复中文导航问题
+const navMapping = {
+  '关于我': 'about',
+  '简历': 'resume', 
+  '作品集': 'portfolio',
+  '博客': 'blog',
+  '联系我': 'contact'
+};
+
+// 重新绑定导航事件
+for (let i = 0; i < navigationLinks.length; i++) {
+  navigationLinks[i].addEventListener("click", function () {
+    const buttonText = this.innerHTML;
+    const targetPage = navMapping[buttonText];
+
+    for (let i = 0; i < pages.length; i++) {
+      if (pages[i].dataset.page === targetPage) {
+        pages[i].classList.add("active");
+        navigationLinks[i].classList.add("active");
+        window.scrollTo(0, 0);
+      } else {
+        pages[i].classList.remove("active");
+        navigationLinks[i].classList.remove("active");
+      }
+    }
+  });
+}
