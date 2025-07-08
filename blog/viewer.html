@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>博客文章查看器 - 赵一欢的个人网站</title>
+
+  <!-- favicon -->
+  <link rel="shortcut icon" href="../assets/images/logo.ico" type="image/x-icon">
+
+  <!-- custom css link -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <!-- google font link -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- marked.js for markdown parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <style>
+    .blog-viewer-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      line-height: 1.8;
+    }
+    
+    .blog-viewer-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #f39c12;
+    }
+    
+    .blog-viewer-title {
+      font-size: 2.5rem;
+      color: #f39c12;
+      margin-bottom: 10px;
+    }
+    
+    .blog-viewer-meta {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .blog-viewer-content {
+      font-size: 1.1rem;
+      color: #333;
+    }
+    
+    .blog-viewer-content h1 {
+      color: #f39c12;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      font-size: 2rem;
+    }
+    
+    .blog-viewer-content h2 {
+      color: #f39c12;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+    
+    .blog-viewer-content h3 {
+      color: #e67e22;
+      margin-top: 25px;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+    
+    .blog-viewer-content p {
+      margin-bottom: 20px;
+    }
+    
+    .blog-viewer-content ul, .blog-viewer-content ol {
+      margin-bottom: 20px;
+      padding-left: 30px;
+    }
+    
+    .blog-viewer-content li {
+      margin-bottom: 8px;
+    }
+    
+    .blog-viewer-content code {
+      background-color: #f8f9fa;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+    }
+    
+    .blog-viewer-content pre {
+      background-color: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+    
+    .blog-viewer-content pre code {
+      background: none;
+      padding: 0;
+    }
+    
+    .back-to-home {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 12px 24px;
+      background-color: #f39c12;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    
+    .back-to-home:hover {
+      background-color: #e67e22;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main>
+    <div class="blog-viewer-container">
+      
+      <div class="blog-viewer-header">
+        <h1 class="blog-viewer-title" id="blog-title">加载中...</h1>
+        <div class="blog-viewer-meta" id="blog-meta">正在加载文章...</div>
+      </div>
+
+      <article class="blog-viewer-content" id="blog-content">
+        <div class="loading">正在加载文章内容...</div>
+      </article>
+
+      <a href="../index.html" class="back-to-home">返回首页</a>
+      
+    </div>
+  </main>
+
+  <!-- ionicon link -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  <script>
+    // 获取URL参数中的文章文件名
+    function getUrlParameter(name) {
+      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+      var results = regex.exec(location.search);
+      return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+
+    // 加载Markdown文件
+    async function loadMarkdownFile(filename) {
+      try {
+        const response = await fetch(filename);
+        if (!response.ok) {
+          throw new Error('文件未找到');
+        }
+        const markdown = await response.text();
+        return markdown;
+      } catch (error) {
+        console.error('加载文件失败:', error);
+        return '# 文件未找到\n\n抱歉，请求的文章文件不存在。';
+      }
+    }
+
+    // 解析Markdown并显示
+    function renderMarkdown(markdown) {
+      // 配置marked选项
+      marked.setOptions({
+        breaks: true,
+        gfm: true
+      });
+      
+      // 解析Markdown
+      const html = marked.parse(markdown);
+      
+      // 更新页面内容
+      document.getElementById('blog-content').innerHTML = html;
+      
+      // 提取标题
+      const titleMatch = markdown.match(/^#\s+(.+)$/m);
+      if (titleMatch) {
+        document.getElementById('blog-title').textContent = titleMatch[1];
+      }
+      
+      // 提取元信息
+      const metaMatch = markdown.match(/\*([^*]+)\*/);
+      if (metaMatch) {
+        document.getElementById('blog-meta').textContent = metaMatch[1];
+      }
+    }
+
+    // 页面加载完成后执行
+    document.addEventListener('DOMContentLoaded', async function() {
+      const filename = getUrlParameter('file');
+      if (filename) {
+        const markdown = await loadMarkdownFile(filename);
+        renderMarkdown(markdown);
+      } else {
+        document.getElementById('blog-content').innerHTML = 
+          '<h2>参数错误</h2><p>请指定要查看的文章文件。</p>';
+      }
+    });
+  </script>
+
+</body>
+
+</html> 
