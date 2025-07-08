@@ -78,13 +78,21 @@ for (let i = 0; i < selectItems.length; i++) {
 // filter variables
 const filterItems = document.querySelectorAll("[data-filter-item]");
 
+// 中文分类映射
+const categoryMapping = {
+  '全部': 'all',
+  'Web设计': 'web design',
+  '应用开发': 'applications',
+  'Web开发': 'web development'
+};
+
 const filterFunc = function (selectedValue) {
 
   for (let i = 0; i < filterItems.length; i++) {
 
-    if (selectedValue === "all") {
+    if (selectedValue === "全部" || selectedValue === "all") {
       filterItems[i].classList.add("active");
-    } else if (selectedValue === filterItems[i].dataset.category) {
+    } else if (categoryMapping[selectedValue] === filterItems[i].dataset.category) {
       filterItems[i].classList.add("active");
     } else {
       filterItems[i].classList.remove("active");
@@ -160,11 +168,8 @@ for (let i = 0; i < navigationLinks.length; i++) {
 
 // 修复中文导航问题
 const navMapping = {
-  '关于我': 'about',
-  '简历': 'resume', 
   '作品集': 'portfolio',
-  '博客': 'blog',
-  '联系我': 'contact'
+  '博客': 'blog'
 };
 
 // 重新绑定导航事件
