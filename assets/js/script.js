@@ -168,7 +168,6 @@ for (let i = 0; i < navigationLinks.length; i++) {
 
 // 修复中文导航问题
 const navMapping = {
-  '作品集': 'portfolio',
   '博客': 'blog'
 };
 

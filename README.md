@@ -72,7 +72,7 @@ zhaoyihuan.github.io/
 
 ## 📝 博客文章
 
-- [博客列表](./blog/viewer.html?file=index.md) - 查看所有文章
+- [博客列表](./blog/index.html) - 查看所有文章
 - [我的第一篇博客文章](./blog/viewer.html?file=first-post.md) - 2024年12月19日
 
 ## 🤝 贡献
