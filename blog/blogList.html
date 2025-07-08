@@ -50,49 +50,30 @@
     }
     
     .blog-article-item {
-      margin-bottom: 30px;
-      padding: 20px;
+      margin-bottom: 15px;
+      padding: 15px;
       border: 1px solid #eee;
       border-radius: 8px;
-      transition: box-shadow 0.3s;
+      transition: all 0.3s;
+      cursor: pointer;
     }
     
     .blog-article-item:hover {
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-color: #f39c12;
     }
     
     .blog-article-link {
-      color: #f39c12;
+      color: #333;
       text-decoration: none;
       font-weight: 500;
-      font-size: 1.2rem;
-      transition: color 0.3s;
+      font-size: 1.1rem;
+      display: block;
+      width: 100%;
     }
     
     .blog-article-link:hover {
-      color: #e67e22;
-      text-decoration: underline;
-    }
-    
-    .blog-meta {
-      color: #666;
-      font-size: 0.9rem;
-      margin: 8px 0;
-    }
-    
-    .blog-category {
-      background-color: #f39c12;
-      color: white;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      margin-right: 10px;
-    }
-    
-    .blog-excerpt {
-      color: #555;
-      margin-top: 10px;
-      line-height: 1.6;
+      color: #f39c12;
     }
     
     .back-to-home {
@@ -132,12 +113,12 @@
       
       <div class="blog-list-header">
         <h1 class="blog-list-title">博客文章列表</h1>
-        <div class="blog-list-subtitle">欢迎来到我的技术博客！这里是我分享技术心得、项目经验和学习笔记的地方。</div>
+        <div class="blog-list-subtitle">点击文章标题查看详情</div>
       </div>
 
       <article class="blog-list-content">
         <div id="articles-container">
-          <div class="loading">正在加载文章列表...</div>
+          <div class="loading">正在扫描文章...</div>
         </div>
 
         <a href="../index.html" class="back-to-home">返回首页</a>
@@ -152,40 +133,30 @@
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
   <script>
-    // 文章列表
-    const articles = [
-      {
-        filename: 'first-post.md',
-        title: '我的第一篇博客文章',
-        category: '技术分享',
-        date: '2024年12月19日',
-        excerpt: '欢迎来到我的个人网站！这是我的第一篇博客文章，我将在这里分享我的技术心得、项目经验和学习笔记。'
-      }
-      // 可以在这里添加更多文章
+    // 已知的.md文件列表
+    const mdFiles = [
+      'first-post.md'
+      // 可以在这里添加更多.md文件名
     ];
 
     // 生成文章列表
     function generateArticleList() {
       const container = document.getElementById('articles-container');
       
-      if (articles.length === 0) {
+      if (mdFiles.length === 0) {
         container.innerHTML = '<div class="no-articles">暂无文章</div>';
         return;
       }
 
       let html = '';
       
-      articles.forEach(article => {
+      mdFiles.forEach(filename => {
+        // 从文件名生成文章标题（去掉.md后缀，将连字符替换为空格）
+        const title = filename.replace('.md', '').replace(/-/g, ' ');
+        
         html += `
-          <div class="blog-article-item">
-            <h3>
-              <a href="./viewer.html?file=${article.filename}" class="blog-article-link">${article.title}</a>
-            </h3>
-            <div class="blog-meta">
-              <span class="blog-category">${article.category}</span>
-              发布时间：${article.date}
-            </div>
-            <p class="blog-excerpt">${article.excerpt}</p>
+          <div class="blog-article-item" onclick="window.location.href='./viewer.html?file=${filename}'">
+            <a href="./viewer.html?file=${filename}" class="blog-article-link">${title}</a>
           </div>
         `;
       });
