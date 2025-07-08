@@ -39,7 +39,7 @@ zhaoyihuan.github.io/
 │   └── js/
 │       └── script.js          # JavaScript 脚本
 ├── blog/                      # 博客文章目录
-│   ├── index.md               # 博客列表
+│   ├── blogList.html          # 博客文章列表
 │   ├── first-post.md          # 第一篇文章
 │   └── viewer.html            # Markdown查看器
 ├── index.html                 # 主页
@@ -72,7 +72,7 @@ zhaoyihuan.github.io/
 
 ## 📝 博客文章
 
-- [博客列表](./blog/index.html) - 查看所有文章
+- [博客列表](./blog/blogList.html) - 查看所有文章
 - [我的第一篇博客文章](./blog/viewer.html?file=first-post.md) - 2024年12月19日
 
 ## 🤝 贡献

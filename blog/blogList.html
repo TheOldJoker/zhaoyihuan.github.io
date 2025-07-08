@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>博客文章列表 - 赵一欢的个人网站</title>
+
+  <!-- favicon -->
+  <link rel="shortcut icon" href="../assets/images/logo.ico" type="image/x-icon">
+
+  <!-- custom css link -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <!-- google font link -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    .blog-list-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      line-height: 1.8;
+    }
+    
+    .blog-list-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #f39c12;
+    }
+    
+    .blog-list-title {
+      font-size: 2.5rem;
+      color: #f39c12;
+      margin-bottom: 10px;
+    }
+    
+    .blog-list-subtitle {
+      color: #666;
+      font-size: 1.1rem;
+    }
+    
+    .blog-list-content {
+      font-size: 1.1rem;
+      color: #333;
+    }
+    
+    .blog-article-item {
+      margin-bottom: 30px;
+      padding: 20px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      transition: box-shadow 0.3s;
+    }
+    
+    .blog-article-item:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .blog-article-link {
+      color: #f39c12;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.2rem;
+      transition: color 0.3s;
+    }
+    
+    .blog-article-link:hover {
+      color: #e67e22;
+      text-decoration: underline;
+    }
+    
+    .blog-meta {
+      color: #666;
+      font-size: 0.9rem;
+      margin: 8px 0;
+    }
+    
+    .blog-category {
+      background-color: #f39c12;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-right: 10px;
+    }
+    
+    .blog-excerpt {
+      color: #555;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+    
+    .back-to-home {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 12px 24px;
+      background-color: #f39c12;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    
+    .back-to-home:hover {
+      background-color: #e67e22;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+    
+    .no-articles {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main>
+    <div class="blog-list-container">
+      
+      <div class="blog-list-header">
+        <h1 class="blog-list-title">博客文章列表</h1>
+        <div class="blog-list-subtitle">欢迎来到我的技术博客！这里是我分享技术心得、项目经验和学习笔记的地方。</div>
+      </div>
+
+      <article class="blog-list-content">
+        <div id="articles-container">
+          <div class="loading">正在加载文章列表...</div>
+        </div>
+
+        <a href="../index.html" class="back-to-home">返回首页</a>
+        
+      </article>
+
+    </div>
+  </main>
+
+  <!-- ionicon link -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  <script>
+    // 文章列表
+    const articles = [
+      {
+        filename: 'first-post.md',
+        title: '我的第一篇博客文章',
+        category: '技术分享',
+        date: '2024年12月19日',
+        excerpt: '欢迎来到我的个人网站！这是我的第一篇博客文章，我将在这里分享我的技术心得、项目经验和学习笔记。'
+      }
+      // 可以在这里添加更多文章
+    ];
+
+    // 生成文章列表
+    function generateArticleList() {
+      const container = document.getElementById('articles-container');
+      
+      if (articles.length === 0) {
+        container.innerHTML = '<div class="no-articles">暂无文章</div>';
+        return;
+      }
+
+      let html = '';
+      
+      articles.forEach(article => {
+        html += `
+          <div class="blog-article-item">
+            <h3>
+              <a href="./viewer.html?file=${article.filename}" class="blog-article-link">${article.title}</a>
+            </h3>
+            <div class="blog-meta">
+              <span class="blog-category">${article.category}</span>
+              发布时间：${article.date}
+            </div>
+            <p class="blog-excerpt">${article.excerpt}</p>
+          </div>
+        `;
+      });
+      
+      container.innerHTML = html;
+    }
+
+    // 页面加载完成后生成文章列表
+    document.addEventListener('DOMContentLoaded', function() {
+      generateArticleList();
+    });
+  </script>
+
+</body>
+
+</html> 
